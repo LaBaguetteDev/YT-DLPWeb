@@ -1,66 +1,20 @@
-<?php
-
-if(isset($_POST['submit'])) {
-    $url = $_POST['video_link'];
-    $command = "yt-dlp $url -P /var/www/html/www.labaguettedev.live/dl/video";
-
-
-    ob_implicit_flush(true);
-    ob_end_flush();
-
-    $descriptorspec = array(
-        0 => array("pipe", "r"),
-        1 => array("pipe", "w"),
-        2 => array("pipe", "w")
-    );
-    flush();
-    $process = proc_open($command, $descriptorspec, $pipes, realpath('./'), array());
-    $output = '';
-    if(is_resource($process)) {
-        while($s = fgets($pipes[1])) {
-            echo $s . '<br>';
-            $output .= $s;
-            flush();
-        }
-    }
-    $firstchar = strpos($output, '/var/www/html/www.labaguettedev.live/dl/video/') +46;
-    $secondchar = strpos($output, '[download]', $firstchar);
-    $filename = substr($output, $firstchar, $secondchar - $firstchar);
-    $path = 'video/'.$filename;
-    echo 'Opération terminée';
-    echo '<a id="link" href="'. $path .'" download="">Télécharger</a>';
-
-}
-?>
 <html lang="en" class="h-100">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Download video</title>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
     <!-- Font-->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap" rel="stylesheet">
     <!-- Bootstrap core CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
+    <script type="application/javascript">
+        function scroll() {
+            const element = document.getElementById('cons');
+            element.scrollTop = element.scrollHeight;
         }
-        .formSmall {
-            width: 700px;
-            margin: 20px auto 20px auto;
-        }
-
-        .texto {
-            visibility: hidden;
-        }
-    </style>
-    <script type="text/javascript">
-        $.when($.ready).then(function () {
-            $(".btn").on("click", () => {
-                $(".texto").css("visibility", "visible");
-            })
-        })
     </script>
 </head>
 <body>
@@ -79,9 +33,34 @@ if(isset($_POST['submit'])) {
                 </div>
             </div>
         </div>
-
-        <p class="texto">Traitement en cours, ceci peut durer jusqu'à plusieurs minutes...</p>
     </form>
 </div>
 
+<div class="cons" id="cons">
+<?php
+
+if(isset($_POST['submit'])) {
+    $url = $_POST['video_link'];
+    $command = " yt-dlp -P /var/www/html/www.labaguettedev.live/dl/video $url";
+    while(@ ob_end_flush());
+    $proc = popen($command, 'r');
+    while (!feof($proc)) {
+        echo '<p>' . fread($proc, 4096) . '</p>';
+        echo '<script>scroll()</script>';
+        @ flush();
+    }
+
+
+
+    echo "
+</div>";
+
+    foreach(glob('./video/*.*') as $path) {
+        $filename = substr($path, 8);
+        $p = urlencode($path);
+        echo "<p><a href='download.php?f=$p'>Télécharger $filename</a></p>";
+    }
+
+}
+?>
 </body>
