@@ -1,4 +1,4 @@
-<html lang="en" class="h-100">
+<html lang="fr" class="h-100">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,8 @@
                 <form method="post">
                     <h3>Télécharger une vidéo</h3>
                     <input type="text" name="video_link" placeholder="URL">
-                    <button id="submit" class="submit" name="submit" type="submit">Télécharger</button>
+                    <button id="submit" class="submit" name="submit" type="submit">Lancer téléchargement</button>
+                    <button id="submit" class="submit" name="delete" type="submit">Supprimer les vidéos du serveur</button>
                 </form>
             </div>
         </div>
@@ -44,9 +45,23 @@ if(isset($_POST['submit'])) {
         echo "<p><a href='download.php?f=$p'>Télécharger $filename</a></p>";
         echo '<script>scroll()</script>';
     }
+}
 
-    echo "
-</div>";
+if(isset($_POST['delete'])) {
+    $files = glob('./video/*.*');
+    foreach($files as $file) {
+        if(is_file($file)) {
+            unlink($file);
+            $ok = '';
+            echo "<p>$file supprimé.</p>";
+        }
+    }
+
+    if(empty($ok)) {
+        echo '<p>Il n\'y a aucune vidéo à supprimer</p>';
+    } else {
+        echo '<p>Les fichiers du serveur ont étés supprimés avec succès.</p>';
+    }
 }
 ?>
         </div>
