@@ -47,7 +47,6 @@ if(isset($_POST['submit'])) {
 
     echo "
 </div>";
-
 }
 ?>
         </div>

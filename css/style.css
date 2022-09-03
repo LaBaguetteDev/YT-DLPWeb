@@ -109,3 +109,26 @@ body {
 .cons p {
     line-height: 1.5rem;
 }
+
+@media screen and (max-width: 1054px) {
+    .login_box {
+        width: 90%;
+        flex-wrap: nowrap;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .login_box .left {
+        width: 100%;
+    }
+
+    .left input {
+        width: auto;
+    }
+
+    .login_box .right {
+        width: 100%;
+    }
+
+
+}
