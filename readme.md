@@ -3,7 +3,7 @@
 > 🟡 **Project status**: Maintenance mode
 
 ## Link
-You can use the tool [[here]](https://labaguettedev.live/dl)
+You can use the tool [here](https://labaguettedev.live/dl).
 
 ## FR
 **YT-DLP Web** est une application web développée en PHP qui permet de télécharger une vidéo de la plupart des hébergeurs de vidéos.
