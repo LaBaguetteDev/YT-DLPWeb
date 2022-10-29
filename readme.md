@@ -1,6 +1,6 @@
 # YT-DLP Web
 
-> 🟡 **Project status**: Maintenance mode
+> 🟡 **Project status**: Flemme de continuer
 
 ## Link
 You can use the tool [here](https://labaguettedev.live/dl).
